@@ -1,0 +1,20 @@
+name: DiabloRPG
+version: 0.3.8
+main: com.example.diablorpg.DiabloRPG
+api-version: '1.21'
+commands:
+  rpgitem:
+    description: RPG 아이템 지급 명령어
+    usage: /rpgitem give <플레이어> <normal|magic|rare|unique|set|runeword> <아이템|random_weapon|유니크ID>
+    permission: diablorpg.admin
+  rpgtest:
+    description: 특정 옵션을 확정 부착한 테스트 아이템 지급
+    usage: /rpgtest <플레이어> <crit|crush|leech|defred|armor|physres|fireres|allres|dmgred|health|atkspeed|movespeed|demon|undead|slow|bow|crossbow|bowmix|overres|negres>
+    permission: diablorpg.admin
+  rpgdummy:
+    description: 전투 테스트용 샌드백 소환/제거
+    usage: "/rpgdummy spawn <normal|undead|demon> [방어%] 또는 /rpgdummy clear"
+    permission: diablorpg.admin
+permissions:
+  diablorpg.admin:
+    default: op

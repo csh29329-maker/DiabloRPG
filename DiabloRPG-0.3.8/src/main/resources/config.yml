@@ -1,0 +1,267 @@
+# DiabloRPG 0.3.0 설정
+# 옵션 수치는 희귀도별로 구분한다 (매직 / 레어).
+# 전용 옵션(치명타, 강타, 회피, 저항 감소, 오라, 스킬 발동)은
+# unique / set / runeword 서브섹션만 가지며, 매직·레어에는 롤되지 않는다.
+#
+# 구현 상태 (0.3.0):
+#   [적용] = 전투에 실제 연결됨 (테스트 가능)
+#   [로직] = 계산 로직은 있으나 테스트 아이템이 없어 미검증
+#   [미구현] = 로어에 표시만 되고 효과 없음 (후속 버전 예정)
+
+rarities:
+  normal:
+    display: "노말"
+    min-options: 0
+    max-options: 0
+  magic:
+    display: "매직"
+    min-options: 1
+    max-options: 2
+  rare:
+    display: "레어"
+    min-options: 3
+    max-options: 5
+  # 아래 등급은 0.3.0에서 아직 구현되지 않음 (명령어는 응답하지만 아이템 미생성).
+  unique:
+    display: "유니크"
+    min-options: 0
+    max-options: 0
+  set:
+    display: "세트"
+    min-options: 0
+    max-options: 0
+  runeword:
+    display: "룬워드"
+    min-options: 0
+    max-options: 0
+
+# 저항 상한/하한 (0.3.4)
+#   max: 이 값을 넘는 저항은 잘린다 (기본 75).
+#   min: 음수 저항의 하한 (기본 -100). 음수 저항은 해당 피해를 더 받는다.
+#   이 항목이 없는 옛 config를 써도 같은 기본값으로 동작한다.
+resist:
+  max: 75
+  min: -100
+
+# 원소 종류 (원소 피해 전환 대상 선택에 사용)
+elements:
+  - "화염"
+  - "냉기"
+  - "번개"
+  - "독"
+  - "비전"
+
+options:
+  # ===== 공격 옵션 =====
+  공격력 증가:            # [적용] 0.2.0 보존
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  공격 속도 증가:          # [적용 — 0.3.1] Attribute.ATTACK_SPEED modifier (무기 메인 핸드)
+    magic: {min: 3, max: 7}
+    rare: {min: 8, max: 15}
+    suffix: "%"
+  물리 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  화염 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  냉기 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  번개 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  독 피해 추가:            # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  비전 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  원소 피해 전환:          # [적용] 대상 원소는 생성 시 무작위 결정
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  생명력 흡수:             # [적용]
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: "%"
+  대상 방어력 감소:        # [적용] 방어력(ARMOR) 수치 감소 방식
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  시전 속도:               # [미구현]
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  대상 둔화:               # [적용 — 0.3.2] 공격 시 % 확률로 대상에게 Slowness 5초 부여
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  악마 추가 피해:          # [적용 — 0.3.2] 악마 몹(블레이즈/가스트/마그마큐브/워든 등)에게 % 추가 피해
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  언데드 추가 피해:        # [적용 — 0.3.2] 언데드(좀비/스켈레톤/팬텀/위더 등)에게 % 추가 피해
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+
+  # ===== 능력치 옵션 (미구현) =====
+  힘:
+    magic: {min: 2, max: 5}
+    rare: {min: 4, max: 8}
+    suffix: ""
+  민첩:
+    magic: {min: 2, max: 5}
+    rare: {min: 4, max: 8}
+    suffix: ""
+  활력:
+    magic: {min: 2, max: 5}
+    rare: {min: 4, max: 8}
+    suffix: ""
+  기력:
+    magic: {min: 2, max: 5}
+    rare: {min: 4, max: 8}
+    suffix: ""
+
+  # ===== 방어/저항 옵션 (적용 — 0.3.0 방어 묶음) =====
+  방어력 증가:            # [적용] 모든 피해 % 감소 (갑옷에 부착 시 피해자에게 적용)
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  물리 저항:              # [적용] 물리 피해 추가 % 감소
+    magic: {min: 2, max: 5}
+    rare: {min: 5, max: 10}
+    suffix: "%"
+  마법 저항:              # [미구현] 비전 저항과 중복 — 후속 정리 예정
+    magic: {min: 2, max: 5}
+    rare: {min: 5, max: 10}
+    suffix: "%"
+  화염 저항:              # [적용] 화염 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  냉기 저항:              # [적용] 냉기 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  번개 저항:              # [적용] 번개 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  독 저항:                # [적용] 독 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  비전 저항:              # [적용] 비전 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  모든 원소 저항:          # [적용] 모든 원소 피해 % 감소
+    magic: {min: 2, max: 5}
+    rare: {min: 5, max: 10}
+    suffix: "%"
+  피해 감소:              # [적용] 고정 수치 감소
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+
+  # ===== 생존/자원 옵션 (0.3.1: 최대 생명력·이동 속도 적용, 마나/회복 미구현) =====
+  최대 생명력:            # [적용 — 0.3.1] Attribute.MAX_HEALTH modifier (갑옷에 부착 시 자동 적용)
+    magic: {min: 10, max: 20}
+    rare: {min: 20, max: 40}
+    suffix: ""
+  생명력 회복:
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+  마나 증가:
+    magic: {min: 10, max: 20}
+    rare: {min: 20, max: 40}
+    suffix: ""
+  마나 회복:
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+  이동 속도:              # [적용 — 0.3.1] Attribute.MOVEMENT_SPEED modifier (갑옷에 부착 시 자동 적용)
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+
+  # ===== 획득/처치 옵션 (미구현) =====
+  경험치 획득:            # 레어 이상
+    rare: {min: 3, max: 7}
+    suffix: "%"
+  아이템 발견 확률:
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  골드 획득량:
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  적 처치 시 생명력 회복:
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+  적 처치 시 마나 회복:
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+
+  # ===== 전용 옵션 (unique / set / runeword) =====
+  # 0.3.0에서는 치명타/강타의 계산 로직만 존재 (테스트 아이템 없음 → 미검증).
+  # 회피/저항 감소/오라/스킬 발동은 수치만 정의 (미구현).
+  치명타 확률:            # [로직] 근접 2배 / 원거리 1.5배, 물리에만 적용
+    unique: {min: 1, max: 5}
+    set: {min: 1, max: 6}
+    runeword: {min: 1, max: 8}
+    suffix: "%"
+  강타 확률:              # [로직] 근접 25% / 원거리 15%, 현재 체력 비례, 물리에만 적용
+    unique: {min: 1, max: 5}
+    set: {min: 1, max: 6}
+    runeword: {min: 1, max: 8}
+    suffix: "%"
+  회피 확률:              # [미구현]
+    unique: {min: 1, max: 5}
+    set: {min: 1, max: 6}
+    runeword: {min: 1, max: 8}
+    suffix: "%"
+  저항 감소:              # [미구현] 룬워드 전용
+    runeword: {min: 5, max: 15}
+    suffix: "%"
+  스킬 발동 확률:         # [미구현]
+    unique: {min: 1, max: 5}
+    set: {min: 1, max: 6}
+    runeword: {min: 1, max: 8}
+    suffix: "%"
+
+# ===== 유니크 아이템 (0.3.6) =====
+# 지급: /rpgitem give <플레이어> unique <ID>
+#   base          기반 마인크래프트 아이템 (예: DIAMOND_SWORD)
+#   options       옵션 종류는 고정, 수치는 min~max 사이에서 생성 시 한 번 굴림. 이름은 위 options의 이름과 같아야 효과가 연결됨.
+#                 효과가 아직 없는 옵션(힘, 명중률 등)은 로어에만 표시된다.
+#   damage-ranges 피해 종류(물리/화염/냉기/번개/독/비전)별로 최소 피해와 최대 피해가 각각 범위로 굴러간다.
+#                 min-low~min-high = 최소 피해 범위, max-low~max-high = 최대 피해 범위.
+#                 생성 때 최소/최대가 정해지고, 타격할 때마다 그 사이에서 다시 굴려 적용한다.
+uniques:
+  griswolds_edge:
+    name: "그리스월드의 날"
+    base: DIAMOND_SWORD
+    options:
+      공격 속도 증가: {min: 10, max: 10, suffix: "%"}
+      공격력 증가: {min: 100, max: 160, suffix: "%"}
+      대상 둔화: {min: 25, max: 25, suffix: "%"}   # 주의: 현재는 "25% 확률로 둔화 부여" 방식 (원작은 항상 25% 감속)
+      명중률: {min: 100, max: 100}                  # 효과 없음 (공격은 항상 명중)
+      힘: {min: 12, max: 12}                        # 효과 없음 (능력치 미구현)
+    damage-ranges:
+      화염: {min-low: 10, min-high: 12, max-low: 15, max-high: 25}
+    # "타격 시 4% 확률로 1레벨 피해 증폭 시전"은 저주 시스템이 없어 넣지 않았다.
