@@ -1,0 +1,6 @@
+-proc:none
+-d
+../out2
+src/main/java/com/example/diablorpg/DiabloRPG.java
+src/main/java/com/example/diablorpg/RuneSystem.java
+src/main/java/com/example/diablorpg/VersionCompat.java

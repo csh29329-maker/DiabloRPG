@@ -1,0 +1,34 @@
+name: DiabloRPG
+version: 0.6.0
+main: com.example.diablorpg.DiabloRPG
+api-version: '1.21'
+commands:
+  rpgitem:
+    description: RPG 아이템 지급 명령어
+    usage: /rpgitem give <플레이어> <normal|magic|rare|unique|set|runeword> <아이템|random_weapon|유니크ID>
+    permission: diablorpg.admin
+  rpgtest:
+    description: 특정 옵션을 확정 부착한 테스트 아이템 지급
+    usage: /rpgtest <플레이어> <crit|crush|leech|defred|armor|physres|fireres|allres|dmgred|health|atkspeed|movespeed|demon|undead|slow|bow|crossbow|bowmix|overres|negres|str|dex|vit|energy|mana|liferegen>
+    permission: diablorpg.admin
+  rpgdummy:
+    description: 전투 테스트용 샌드백 소환/제거
+    usage: "/rpgdummy spawn <normal|undead|demon> [방어%] 또는 /rpgdummy clear"
+    permission: diablorpg.admin
+  rpgrune:
+    description: 룬 지급 / 룬워드 레시피 확인
+    usage: "/rpgrune give <플레이어> <룬|all> [개수] 또는 /rpgrune list 또는 /rpgrune recipes"
+    permission: diablorpg.admin
+  rpgcube:
+    description: 큐브 창 열기 (룬워드 제작, 테스트용)
+    usage: /rpgcube
+    permission: diablorpg.admin
+  rpgset:
+    description: 착용 중인 세트 아이템과 활성 세트 보너스 확인 / 세트 목록
+    usage: "/rpgset 또는 /rpgset list"
+  rpgstat:
+    description: 내 능력치(힘/민첩/활력/마력)와 마나 확인
+    usage: "/rpgstat 또는 /rpgstat setmana <수치>"
+permissions:
+  diablorpg.admin:
+    default: op

@@ -1,0 +1,8 @@
+-proc:none
+-d
+../../../../../../../out4
+DiabloRPG.java
+RuneSystem.java
+SetSystem.java
+StatSystem.java
+VersionCompat.java
