@@ -1,0 +1,1558 @@
+# DiabloRPG 0.3.0 설정
+# 옵션 수치는 희귀도별로 구분한다 (매직 / 레어).
+# 전용 옵션(치명타, 강타, 회피, 저항 감소, 오라, 스킬 발동)은
+# unique / set / runeword 서브섹션만 가지며, 매직·레어에는 롤되지 않는다.
+#
+# 구현 상태 (0.3.0):
+#   [적용] = 전투에 실제 연결됨 (테스트 가능)
+#   [로직] = 계산 로직은 있으나 테스트 아이템이 없어 미검증
+#   [미구현] = 로어에 표시만 되고 효과 없음 (후속 버전 예정)
+
+rarities:
+  normal:
+    display: "노말"
+    min-options: 0
+    max-options: 0
+  magic:
+    display: "매직"
+    min-options: 1
+    max-options: 2
+  rare:
+    display: "레어"
+    min-options: 3
+    max-options: 5
+  # 아래 등급은 0.3.0에서 아직 구현되지 않음 (명령어는 응답하지만 아이템 미생성).
+  unique:
+    display: "유니크"
+    min-options: 0
+    max-options: 0
+  set:
+    display: "세트"
+    min-options: 0
+    max-options: 0
+  runeword:
+    display: "룬워드"
+    min-options: 0
+    max-options: 0
+
+# 저항 상한/하한 (0.3.4)
+#   max: 이 값을 넘는 저항은 잘린다 (기본 75).
+#   min: 음수 저항의 하한 (기본 -100). 음수 저항은 해당 피해를 더 받는다.
+#   이 항목이 없는 옛 config를 써도 같은 기본값으로 동작한다.
+resist:
+  max: 75
+  min: -100
+
+# 회피 상한 (0.6.3)
+dodge:
+  max: 75.0
+
+# 원소 종류 (원소 피해 전환 대상 선택에 사용)
+elements:
+  - "화염"
+  - "냉기"
+  - "번개"
+  - "독"
+  - "비전"
+
+options:
+  # ===== 공격 옵션 =====
+  공격력 증가:            # [적용] 0.2.0 보존
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  공격 속도 증가:          # [적용 — 0.3.1] Attribute.ATTACK_SPEED modifier (무기 메인 핸드)
+    magic: {min: 3, max: 7}
+    rare: {min: 8, max: 15}
+    suffix: "%"
+  물리 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  화염 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  냉기 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  번개 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  독 피해 추가:            # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  비전 피해 추가:          # [적용]
+    magic: {min: 1, max: 3}
+    rare: {min: 2, max: 5}
+    suffix: ""
+  원소 피해 전환:          # [적용] 대상 원소는 생성 시 무작위 결정
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  생명력 흡수:             # [적용]
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: "%"
+  마나 흡수:               # [적용 — 0.6.4] 입힌 피해의 %만큼 마나 회복
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: "%"
+  대상 방어력 감소:        # [적용] 방어력(ARMOR) 수치 감소 방식
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  시전 속도:               # [적용 — 0.7.1] 함성(시전 속도 스킬)의 시전 시간 단축
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  대상 둔화:               # [적용 — 0.3.2] 공격 시 % 확률로 대상에게 Slowness 5초 부여
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  악마 추가 피해:          # [적용 — 0.3.2] 악마 몹(블레이즈/가스트/마그마큐브/워든 등)에게 % 추가 피해
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  언데드 추가 피해:        # [적용 — 0.3.2] 언데드(좀비/스켈레톤/팬텀/위더 등)에게 % 추가 피해
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+
+  # ===== 능력치 옵션 (0.6.0 적용: 효과는 아래 stats 섹션) =====
+  힘:
+    magic: {min: 2, max: 5}
+    rare: {min: 4, max: 8}
+    suffix: ""
+  민첩:
+    magic: {min: 2, max: 5}
+    rare: {min: 4, max: 8}
+    suffix: ""
+  활력:
+    magic: {min: 2, max: 5}
+    rare: {min: 4, max: 8}
+    suffix: ""
+  마력:
+    magic: {min: 2, max: 5}
+    rare: {min: 4, max: 8}
+    suffix: ""
+
+  # ===== 방어/저항 옵션 (적용 — 0.3.0 방어 묶음) =====
+  방어력 증가:            # [적용] 모든 피해 % 감소 (갑옷에 부착 시 피해자에게 적용)
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  물리 저항:              # [적용] 물리 피해 추가 % 감소
+    magic: {min: 2, max: 5}
+    rare: {min: 5, max: 10}
+    suffix: "%"
+  # 마법 저항은 0.6.3에서 비전 저항으로 통합됨 (기존 아이템의 '마법 저항' 로어도 비전 저항으로 호환 처리)
+  화염 저항:              # [적용] 화염 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  냉기 저항:              # [적용] 냉기 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  번개 저항:              # [적용] 번개 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  독 저항:                # [적용] 독 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  비전 저항:              # [적용] 비전 피해 % 감소
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  모든 원소 저항:          # [적용] 모든 원소 피해 % 감소
+    magic: {min: 2, max: 5}
+    rare: {min: 5, max: 10}
+    suffix: "%"
+  피해 감소:              # [적용] 고정 수치 감소
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+
+  # ===== 생존/자원 옵션 (0.3.1: 최대 생명력·이동 속도 적용, 마나/회복 미구현) =====
+  최대 생명력:            # [적용 — 0.3.1] Attribute.MAX_HEALTH modifier (갑옷에 부착 시 자동 적용)
+    magic: {min: 10, max: 20}
+    rare: {min: 20, max: 40}
+    suffix: ""
+  생명력 회복:
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+  마나 증가:
+    magic: {min: 10, max: 20}
+    rare: {min: 20, max: 40}
+    suffix: ""
+  마나 회복:
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+  이동 속도:              # [적용 — 0.3.1] Attribute.MOVEMENT_SPEED modifier (갑옷에 부착 시 자동 적용)
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+
+  # ===== 획득/처치 옵션 (0.6.1 처치 회복 / 0.6.2 아이템 발견·골드 획득 적용) =====
+  경험치 획득:            # [적용 — 0.6.3] 레어 이상 (처치 시 드롭 경험치 % 증가)
+    rare: {min: 3, max: 7}
+    suffix: "%"
+  아이템 발견 확률:        # [적용 — 0.6.2]
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 15}
+    suffix: "%"
+  골드 획득량:             # [적용 — 0.6.2]
+    magic: {min: 5, max: 10}
+    rare: {min: 10, max: 20}
+    suffix: "%"
+  적 처치 시 생명력 회복:    # [적용 — 0.6.1]
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+  적 처치 시 마나 회복:      # [적용 — 0.6.1]
+    magic: {min: 1, max: 2}
+    rare: {min: 2, max: 4}
+    suffix: ""
+
+  # ===== 전용 옵션 (unique / set / runeword) =====
+  # 0.3.0에서는 치명타/강타의 계산 로직만 존재 (테스트 아이템 없음 → 미검증).
+  # 오라/스킬 발동은 수치만 정의 (미구현). 회피 확률·저항 감소는 0.6.3에서 적용됨.
+  치명타 확률:            # [로직] 근접 2배 / 원거리 1.5배, 물리에만 적용
+    unique: {min: 1, max: 5}
+    set: {min: 1, max: 6}
+    runeword: {min: 1, max: 8}
+    suffix: "%"
+  강타 확률:              # [로직] 근접 25% / 원거리 15%, 현재 체력 비례, 물리에만 적용
+    unique: {min: 1, max: 5}
+    set: {min: 1, max: 6}
+    runeword: {min: 1, max: 8}
+    suffix: "%"
+  회피 확률:              # [적용 — 0.6.3] 엔티티 공격 피격 시 확률 회피
+    unique: {min: 1, max: 5}
+    set: {min: 1, max: 6}
+    runeword: {min: 1, max: 8}
+    suffix: "%"
+  저항 감소:              # [적용 — 0.6.3] 룬워드 전용 (모든 원소 저항 감소, 0% 이하 관통)
+    runeword: {min: 5, max: 15}
+    suffix: "%"
+  피해:                   # [적용 — 0.6.4] 고뇌(Grief) 방식 순수 피해 가산
+    unique: {min: 4, max: 8}
+    set: {min: 4, max: 8}
+    runeword: {min: 8, max: 15}
+    suffix: ""
+  상처 열기:              # [적용 — 0.6.4] 타격 시 % 확률로 출혈 지속 피해 + 회복 차단
+    unique: {min: 10, max: 25}
+    set: {min: 10, max: 25}
+    runeword: {min: 15, max: 35}
+    suffix: "%"
+  스킬 발동 확률:         # [미구현]
+    unique: {min: 1, max: 5}
+    set: {min: 1, max: 6}
+    runeword: {min: 1, max: 8}
+    suffix: "%"
+
+# ===== 전투 세부 규칙 (0.6.4) =====
+combat:
+  # pre-percent  = 디아블로 2 고뇌 원작 방식 (% 공격력 증가·힘·치명타 적용 전에 무기 기본 피해에 가산)
+  # post-percent = % 공격력 증가의 영향을 받지 않고 순수 물리 고정 피해로 가산
+  flat-damage-mode: pre-percent
+  ignore-defense-boss-scale: 0.5     # 방어 무시 사용 시 보스·PvP 대상 방어% 무시 비율 (일반 몹/샌드백은 1.0 = 100%)
+  prevent-heal-seconds: 30           # 괴물 회복 저지 / 대상 회복 불가 지속 시간 (초)
+  open-wounds:
+    duration-sec: 8                  # 상처 열기 출혈 지속 시간 (초)
+    damage-per-sec: 2.0              # 상처 열기 초당 출혈 피해 (방어/저항 무시)
+
+# ===== 유니크 아이템 (0.3.6) =====
+# 지급: /rpgitem give <플레이어> unique <ID>
+#   base          기반 마인크래프트 아이템 (예: DIAMOND_SWORD)
+#   options       옵션 종류는 고정, 수치는 min~max 사이에서 생성 시 한 번 굴림. 이름은 위 options의 이름과 같아야 효과가 연결됨.
+#                 효과가 아직 없는 옵션(힘, 명중률 등)은 로어에만 표시된다.
+#   damage-ranges 피해 종류(물리/화염/냉기/번개/독/비전)별로 최소 피해와 최대 피해가 각각 범위로 굴러간다.
+#                 min-low~min-high = 최소 피해 범위, max-low~max-high = 최대 피해 범위.
+#                 생성 때 최소/최대가 정해지고, 타격할 때마다 그 사이에서 다시 굴려 적용한다.
+uniques:
+  griswolds_edge:
+    name: "그리스월드의 날"
+    base: DIAMOND_SWORD
+    options:
+      공격 속도 증가: {min: 10, max: 10, suffix: "%"}
+      공격력 증가: {min: 100, max: 160, suffix: "%"}
+      대상 둔화: {min: 25, max: 25, suffix: "%"}   # 주의: 현재는 "25% 확률로 둔화 부여" 방식 (원작은 항상 25% 감속)
+      명중률: {min: 100, max: 100}                  # 효과 없음 (공격은 항상 명중)
+      힘: {min: 12, max: 12}                        # 0.6.0부터 적용 (근접 물리 피해 +N%)
+      타격 시 피해 증폭 1레벨 시전: {min: 4, max: 4, suffix: "% 확률"}   # 0.7.0: 저주 시스템으로 활성화
+    damage-ranges:
+      화염: {min-low: 10, min-high: 12, max-low: 15, max-high: 25}
+  goldskin:
+    name: "골드스킨 (Goldskin)"
+    base: IRON_CHESTPLATE
+    options:
+      방어력 증가: {min: 45, max: 65, suffix: "%"}
+      모든 원소 저항: {min: 15, max: 25, suffix: "%"}
+      골드 획득량: {min: 50, max: 100, suffix: "%"}
+  tarnhelm:
+    name: "탄헬름 (Tarnhelm)"
+    base: IRON_HELMET
+    options:
+      아이템 발견 확률: {min: 25, max: 50, suffix: "%"}
+      골드 획득량: {min: 50, max: 75, suffix: "%"}
+      마력: {min: 10, max: 10}
+  raven_claw:
+    name: "레이븐 클로 (Raven Claw)"
+    base: BOW
+    options:
+      공격력 증가: {min: 40, max: 60, suffix: "%"}
+      화염 피해 추가: {min: 6, max: 12}
+      민첩: {min: 10, max: 10}
+  wall_of_the_eyeless:
+    name: "아이리스의 벽 (Wall of the Eyeless)"
+    base: SHIELD
+    options:
+      방어력 증가: {min: 20, max: 35, suffix: "%"}
+      적 처치 시 마나 회복: {min: 5, max: 5}
+      독 저항: {min: 20, max: 20, suffix: "%"}
+  twitchthroe:
+    name: "트위치스로우 (Twitchthroe)"
+    base: IRON_CHESTPLATE
+    options:
+      회피 확률: {min: 15, max: 25, suffix: "%"}
+      공격 속도 증가: {min: 15, max: 20, suffix: "%"}
+      민첩: {min: 10, max: 10}
+
+  skilltest_chest:
+    name: "[테스트] 스킬 갑옷"
+    base: IRON_CHESTPLATE
+    options:
+      모든 스킬: {min: 2, max: 2}
+      바바리안 스킬: {min: 1, max: 1}
+      강격 레벨: {min: 3, max: 3}
+      힘의 오라: {min: 5, max: 5, suffix: "레벨"}
+      피격 시 강철 처녀 1레벨 시전: {min: 30, max: 30, suffix: "% 확률"}
+      방어력 증가: {min: 30, max: 30, suffix: "%"}
+  skilltest_sword:
+    name: "[테스트] 저주의 검"
+    base: DIAMOND_SWORD
+    options:
+      타격 시 피해 증폭 1레벨 시전: {min: 100, max: 100, suffix: "% 확률"}
+      타격 시 저항 낮추기 1레벨 시전: {min: 100, max: 100, suffix: "% 확률"}
+      신성한 불 오라: {min: 3, max: 3, suffix: "레벨"}
+# ===== 능력치 / 마나 / 생명력 회복 (0.6.0, 전부 미검증) =====
+# 능력치는 장비 옵션으로만 올라간다 (방어구 4칸 + 보조 손 방패 + 주 손 무기 + 활성 세트 보너스 합산).
+stats:
+  strength:
+    melee-phys-pct-per-point: 1.0    # 힘 1당 근접 물리 피해 +N% (활/석궁에는 적용 안 됨)
+  dexterity:
+    ranged-phys-pct-per-point: 1.0   # 민첩 1당 활/석궁 물리 피해 +N%
+    defense-pct-per-point: 0.5       # 민첩 1당 방어력 증가 +N%
+  vitality:
+    health-per-point: 2.0            # 활력 1당 최대 생명력 +N (2 = 하트 1칸)
+  energy:
+    mana-per-point: 2.0              # 마력 1당 최대 마나 +N
+mana:
+  base: 20.0                         # 기본 최대 마나
+  base-regen-per-sec: 0.5            # 기본 초당 마나 회복 (마나 회복 옵션이 더해짐)
+  actionbar: true                    # 액션바에 생명력/마나 표시 (끄려면 false)
+life-regen:
+  per-point-per-sec: 0.2             # 생명력 회복 옵션 1당 초당 회복량
+
+kill-recovery:
+  hostile-only: true                 # true면 적대적 몹/플레이어 처치 시에만 회복 (가축 도축 파밍 방지)
+  life-per-point: 1.0                # 적 처치 시 생명력 회복 옵션 1당 회복량
+  mana-per-point: 1.0                # 적 처치 시 마나 회복 옵션 1당 회복량
+
+# ===== 골드 / 장비 드롭 / 상점 / 도박 (0.6.2) =====
+gold:
+  actionbar: true                    # 액션바에 보유 골드 표시
+  drop:
+    enabled: true                    # 몬스터 처치 시 골드 자동 적립
+    mob-min: 10                      # 일반 적대적 몹 최소 골드
+    mob-max: 30                      # 일반 적대적 몹 최대 골드
+    boss-min: 250                    # 보스(위더/엔더드래곤/워든/엘더가디언) 최소
+    boss-max: 500                    # 보스 최대
+    notify-chat: false               # true면 일반 몹 처치 때도 채팅으로 +골드 알림 (보스는 항상 알림)
+
+drops:
+  enabled: true                      # 몬스터 처치 시 RPG 장비 드롭
+  mob-chance: 4.0                    # 일반 적대적 몹 기본 드롭 확률 (%)
+  boss-chance: 100.0                 # 보스 기본 드롭 확률 (%)
+  magic-find-drop-scale: 0.5         # 아이템 발견 확률 100%당 드롭 확률 +50% 가중 (0이면 등급만 상승)
+  weights:
+    normal: 55.0
+    magic: 34.0
+    rare: 9.0
+    set: 1.2
+    unique: 0.8
+
+shop:
+  block: GOLD_BLOCK                  # 우클릭 시 상점/도박 GUI 열림 (웅크리면 제외)
+
+gamble:
+  magic-find-affects: false          # true로 바꾸면 도박에도 아이템 발견 확률이 적용됨 (기본 false = 원작 기준)
+  weights:
+    magic: 88.0
+    rare: 10.0
+    set: 1.2
+    unique: 0.8
+  prices:
+    sword: 120
+    axe: 120
+    bow: 110
+    crossbow: 130
+    helmet: 100
+    armor: 150
+    boots: 95
+    shield: 110
+# 마나는 아직 소비처(스킬)가 없다. 최대치, 회복, 표시, 저장만 동작한다.
+
+# ===== 세트 아이템 (0.5.0, 전부 미검증) =====
+# /rpgitem give <플레이어> set <세트ID>          세트 전체 부위 지급
+# /rpgitem give <플레이어> set <세트ID>:<부위ID>  한 부위만 지급
+# /rpgset            내가 착용한 세트와 활성 보너스 확인
+# /rpgset list       등록된 세트 목록
+#   pieces   부위. base=바닐라 아이템, options=부위 자체 옵션 (유니크처럼 종류 고정, 수치는 생성 때 min~max에서 굴림)
+#   bonuses  키(숫자) = 필요한 서로 다른 부위 수. 그 수 이하의 단계가 모두 누적 적용된다.
+#            보너스 수치는 고정값(value). 같은 옵션이 여러 단계에 있으면 더해진다.
+#            "원소 피해 전환"은 세트 보너스로 쓸 수 없다.
+#   inactive 시스템이 없어 효과가 없는 항목 (로어에 회색으로만 표시)
+# 부위 수에 세는 칸: 방어구 4칸, 보조 손 방패, 주 손 무기(방어구/방패 제외). 같은 부위를 둘 입어도 1개로 센다.
+# 아래 두 세트는 이름만 디아블로 2에서 따왔고, 부위 구성과 수치는 현재 있는 바닐라 장비 종류에 맞춘 임시값이다 (원작 아님).
+# 장갑/허리띠 등 지원하지 않는 부위는 빠져 있다.
+sets:
+  sigons:
+    name: "시곤의 완전한 강철 (Sigon's Complete Steel)"
+    pieces:
+      helm:
+        name: "시곤의 면갑 (Sigon's Visor)"
+        base: IRON_HELMET
+        options:
+          방어력 증가: {min: 10, max: 15, suffix: "%"}
+          최대 생명력: {min: 10, max: 20}
+      armor:
+        name: "시곤의 보호구 (Sigon's Shelter)"
+        base: IRON_CHESTPLATE
+        options:
+          방어력 증가: {min: 15, max: 25, suffix: "%"}
+          물리 저항: {min: 5, max: 10, suffix: "%"}
+      shield:
+        name: "시곤의 방패 (Sigon's Guard)"
+        base: SHIELD
+        options:
+          방어력 증가: {min: 10, max: 20, suffix: "%"}
+          모든 원소 저항: {min: 5, max: 10, suffix: "%"}
+      boots:
+        name: "시곤의 장화 (Sigon's Sabot)"
+        base: IRON_BOOTS
+        options:
+          이동 속도: {min: 5, max: 10, suffix: "%"}
+          최대 생명력: {min: 10, max: 20}
+    bonuses:
+      2:
+        options:
+          최대 생명력: {value: 20}
+      3:
+        options:
+          모든 원소 저항: {value: 10, suffix: "%"}
+      4:
+        options:
+          방어력 증가: {value: 20, suffix: "%"}
+          피해 감소: {value: 3}
+  cleglaws:
+    name: "클레글러의 도구 (Cleglaw's Brace)"
+    pieces:
+      sword:
+        name: "클레글러의 이빨 (Cleglaw's Tooth)"
+        base: DIAMOND_SWORD
+        options:
+          공격력 증가: {min: 30, max: 50, suffix: "%"}
+          생명력 흡수: {min: 2, max: 3, suffix: "%"}
+      shield:
+        name: "클레글러의 발톱 (Cleglaw's Claw)"
+        base: SHIELD
+        options:
+          방어력 증가: {min: 10, max: 20, suffix: "%"}
+          물리 저항: {min: 5, max: 10, suffix: "%"}
+    bonuses:
+      2:
+        options:
+          공격 속도 증가: {value: 10, suffix: "%"}
+          공격력 증가: {value: 15, suffix: "%"}
+
+# ===== 룬 / 큐브 / 룬워드 (0.4.0, 전부 미검증) =====
+# 룬 33종은 코드에 고정되어 있다 (El ~ Zod, 순서 = 룬 번호).
+runes:
+  # 룬 아이템의 기반 마인크래프트 아이템. 바꾸면 리소스팩의 모델 파일 이름도 같이 바꿔야 한다.
+  item: AMETHYST_SHARD
+  # 난이도 시스템이 아직 없어 여기서 직접 정한다: normal / nightmare / hell
+  difficulty: normal
+  # 난이도별로 드롭 가능한 가장 높은 룬 (핸드오프 문서 기준: 노말 Ral #8, 악몽 Ko #18, 지옥 Lo #28)
+  max-rune:
+    normal: Ral
+    nightmare: Ko
+    hell: Lo
+  drop:
+    chance: 2.0          # 일반 몬스터 처치 시 룬 1개가 나올 확률 (%) -- 임시값
+    boss-chance: 25.0    # 보스(위더, 엔더 드래곤, 워든, 엘더 가디언) -- 임시값
+    decay: 0.8           # 높은 번호 룬일수록 잘 안 나온다. 룬 n번의 가중치 = decay^(n-1) -- 임시값
+    magic-find-scale: 0.0 # 아이템 발견 확률이 룬 드롭에도 영향을 줄지 비율 (0.0 = 원작처럼 미적용)
+
+# 큐브: 아래 블록을 맨손/아무 아이템으로 우클릭하면 큐브 창이 열린다 (웅크리면 열리지 않음).
+# 관리자는 /rpgcube 로도 열 수 있다.
+cube:
+  block: LODESTONE
+
+# 룬워드 장비 종류 묶음. 룬워드의 types 에는 종류 이름이나 묶음 이름을 쓴다.
+# 종류: sword axe mace spear(삼지창) bow crossbow helmet armor(가슴 갑옷) boots shield
+# 장갑/목걸이/반지/허리띠/단검/지팡이/마법봉은 대응하는 바닐라 아이템이 없어 아직 지원하지 않는다.
+item-groups:
+  melee: [sword, axe, mace, spear]
+  missile: [bow, crossbow]
+  weapon: [sword, axe, mace, spear, bow, crossbow]
+
+# 룬워드 레시피 (룬 조합은 디아블로 2 자료 두 곳에서 일치하는 것만 넣었다. 순서는 상관없음)
+#   runes     필요한 룬 (순서 무관, 장비는 노말 등급이어야 함)
+#   variants  장비 종류별 효과. types 가 맞는 첫 번째 variant 가 적용된다.
+#   options   실제 효과가 연결되는 옵션 (위 options 와 같은 이름). 수치는 만들 때 min~max 에서 굴린다.
+#   inactive  원작에는 있지만 이 플러그인에 시스템이 없어 효과가 없는 항목 (로어에 회색으로만 표시)
+# 모든 수치는 원작이 아니라 이 서버용 임시값이다. 원작은 "+300% 공격력" 같은 값이라 그대로 쓰지 않았다.
+runewords:
+  # --- 노말/저레벨 룬워드 (기존 개선 + 신규) ---
+  steel:
+    name: "강철 (Steel)"
+    runes: [Tir, El]
+    variants:
+      melee:
+        types: [sword, axe, mace]
+        options:
+          공격 속도 증가: {min: 10, max: 15, suffix: "%"}
+          공격력 증가: {min: 15, max: 25, suffix: "%"}
+          상처 열기: {min: 50, max: 50, suffix: "%"}
+          적 처치 시 마나 회복: {min: 2, max: 2}
+        inactive: ["명중률 +50"]
+
+  nadir:
+    name: "천저 (Nadir)"
+    runes: [Nef, Tir]
+    variants:
+      helmet:
+        types: [helmet]
+        options:
+          방어력 증가: {min: 20, max: 30, suffix: "%"}
+          힘: {min: 5, max: 5}
+          적 처치 시 마나 회복: {min: 2, max: 2}
+          피해 감소: {min: 2, max: 3}
+        inactive: ["망토 그림자 충전", "시야 감소"]
+
+  zephyr:
+    name: "서풍 (Zephyr)"
+    runes: [Ort, Eth]
+    variants:
+      missile:
+        types: [missile]
+        options:
+          공격 속도 증가: {min: 20, max: 25, suffix: "%"}
+          공격력 증가: {min: 25, max: 33, suffix: "%"}
+          번개 피해 추가: {min: 3, max: 7}
+          이동 속도: {min: 15, max: 15, suffix: "%"}
+          대상 방어력 감소: {min: 15, max: 15, suffix: "%"}
+
+  malice:
+    name: "악의 (Malice)"
+    runes: [Ith, El, Eth]
+    variants:
+      melee:
+        types: [melee]
+        options:
+          공격력 증가: {min: 20, max: 33, suffix: "%"}
+          대상 방어력 감소: {min: 10, max: 15, suffix: "%"}
+          상처 열기: {min: 100, max: 100, suffix: "%"}
+          대상 회복 불가: {flag: true}
+        inactive: ["명중률 +50"]
+
+  strength:
+    name: "힘 (Strength)"
+    runes: [Amn, Tir]
+    variants:
+      melee:
+        types: [melee]
+        options:
+          공격력 증가: {min: 25, max: 35, suffix: "%"}
+          생명력 흡수: {min: 5, max: 7, suffix: "%"}
+          강타 확률: {min: 10, max: 15, suffix: "%"}
+          힘: {min: 20, max: 20}
+          활력: {min: 10, max: 10}
+          적 처치 시 마나 회복: {min: 2, max: 2}
+
+  stealth:
+    name: "잠행 (Stealth)"
+    runes: [Tal, Eth]
+    variants:
+      armor:
+        types: [armor]
+        options:
+          이동 속도: {min: 15, max: 15, suffix: "%"}
+          독 저항: {min: 20, max: 30, suffix: "%"}
+          민첩: {min: 6, max: 6}
+          마나 회복: {min: 1, max: 2}
+          피해 감소: {min: 2, max: 3}
+          시전 속도: {min: 25, max: 25, suffix: "%"}   # 0.7.1: 시전 속도 활성화
+
+  lore:
+    name: "학식 (Lore)"
+    runes: [Ort, Sol]
+    variants:
+      helmet:
+        types: [helmet]
+        options:
+          마력: {min: 10, max: 10}
+          번개 저항: {min: 25, max: 30, suffix: "%"}
+          피해 감소: {min: 4, max: 7}
+          적 처치 시 마나 회복: {min: 2, max: 2}
+          모든 스킬: {min: 1, max: 1}   # 0.7.0: 스킬 시스템으로 활성화
+
+  rhyme:
+    name: "각운 (Rhyme)"
+    runes: [Shael, Eth]
+    variants:
+      shield:
+        types: [shield]
+        options:
+          방어력 증가: {min: 20, max: 30, suffix: "%"}
+          모든 원소 저항: {min: 15, max: 25, suffix: "%"}
+          마나 회복: {min: 2, max: 2}
+          아이템 발견 확률: {min: 25, max: 25, suffix: "%"}
+          골드 획득량: {min: 50, max: 50, suffix: "%"}
+          빙결 방지: {flag: true}
+
+  ancients_pledge:
+    name: "고대의 맹세 (Ancient's Pledge)"
+    runes: [Ral, Ort, Tal]
+    variants:
+      shield:
+        types: [shield]
+        options:
+          방어력 증가: {min: 25, max: 35, suffix: "%"}
+          모든 원소 저항: {min: 15, max: 20, suffix: "%"}
+          화염 저항: {min: 10, max: 15, suffix: "%"}
+          독 저항: {min: 10, max: 15, suffix: "%"}
+
+  edge:
+    name: "모서리 (Edge)"
+    runes: [Tir, Tal, Amn]
+    variants:
+      missile:
+        types: [missile]
+        options:
+          공격 속도 증가: {min: 15, max: 20, suffix: "%"}
+          악마 추가 피해: {min: 40, max: 60, suffix: "%"}
+          언데드 추가 피해: {min: 25, max: 40, suffix: "%"}
+          생명력 흡수: {min: 5, max: 7, suffix: "%"}
+          적 처치 시 마나 회복: {min: 2, max: 2}
+          힘: {min: 5, max: 10}
+          민첩: {min: 5, max: 10}
+          활력: {min: 5, max: 10}
+          마력: {min: 5, max: 10}
+        inactive: ["가시 오라"]   # 상점/도박 15% 할인은 손에 들고 열면 자동 적용됨
+
+  smoke:
+    name: "연기 (Smoke)"
+    runes: [Nef, Lum]
+    variants:
+      armor:
+        types: [armor]
+        options:
+          방어력 증가: {min: 30, max: 45, suffix: "%"}
+          모든 원소 저항: {min: 25, max: 35, suffix: "%"}
+          마력: {min: 10, max: 10}
+
+  # --- 중급 룬워드 (악몽 구간) ---
+  insight:
+    name: "통찰 (Insight)"
+    runes: [Ral, Tir, Tal, Sol]
+    variants:
+      ranged_or_spear:
+        types: [spear, missile]
+        options:
+          공격력 증가: {min: 20, max: 30, suffix: "%"}
+          화염 피해 추가: {min: 4, max: 8}
+          독 피해 추가: {min: 4, max: 8}
+          치명타 확률: {min: 10, max: 15, suffix: "%"}
+          적 처치 시 마나 회복: {min: 2, max: 2}
+          힘: {min: 5, max: 5}
+          민첩: {min: 5, max: 5}
+          활력: {min: 5, max: 5}
+          마력: {min: 5, max: 5}
+          시전 속도: {min: 35, max: 35, suffix: "%"}   # 0.7.1: 시전 속도 활성화
+        inactive: ["명상 오라", "명중률 증가"]
+
+  spirit:
+    name: "정신 (Spirit)"
+    runes: [Tal, Thul, Ort, Amn]
+    variants:
+      sword:
+        types: [sword]
+        options:
+          최대 생명력: {min: 20, max: 30}
+          활력: {min: 10, max: 15}
+          마나 증가: {min: 25, max: 40}
+          생명력 흡수: {min: 4, max: 6, suffix: "%"}
+          냉기 피해 추가: {min: 3, max: 6}
+          번개 피해 추가: {min: 3, max: 8}
+          독 피해 추가: {min: 3, max: 6}
+          모든 스킬: {min: 2, max: 2}   # 0.7.0: 스킬 시스템으로 활성화
+          시전 속도: {min: 25, max: 35, suffix: "%"}   # 0.7.1: 시전 속도 활성화
+      shield:
+        types: [shield]
+        options:
+          최대 생명력: {min: 20, max: 30}
+          활력: {min: 10, max: 15}
+          마나 증가: {min: 25, max: 40}
+          모든 원소 저항: {min: 10, max: 15, suffix: "%"}
+          냉기 저항: {min: 10, max: 15, suffix: "%"}
+          번개 저항: {min: 10, max: 15, suffix: "%"}
+          독 저항: {min: 10, max: 15, suffix: "%"}
+          모든 스킬: {min: 2, max: 2}   # 0.7.0: 스킬 시스템으로 활성화
+          시전 속도: {min: 25, max: 35, suffix: "%"}   # 0.7.1: 시전 속도 활성화
+
+  lionheart:
+    name: "용맹 (Lionheart)"
+    runes: [Hel, Lum, Fal]
+    variants:
+      armor:
+        types: [armor]
+        options:
+          공격력 증가: {min: 15, max: 20, suffix: "%"}
+          힘: {min: 15, max: 25}
+          민첩: {min: 10, max: 15}
+          활력: {min: 15, max: 20}
+          마력: {min: 10, max: 10}
+          최대 생명력: {min: 25, max: 35}
+          모든 원소 저항: {min: 20, max: 30, suffix: "%"}
+
+  honor:
+    name: "명예 (Honor)"
+    runes: [Amn, El, Ith, Tir, Sol]
+    variants:
+      melee:
+        types: [melee]
+        options:
+          공격력 증가: {min: 45, max: 65, suffix: "%"}
+          물리 피해 추가: {min: 6, max: 10}
+          생명력 흡수: {min: 5, max: 7, suffix: "%"}
+          치명타 확률: {min: 15, max: 25, suffix: "%"}
+          힘: {min: 10, max: 10}
+          생명력 회복: {min: 3, max: 5}
+          적 처치 시 마나 회복: {min: 2, max: 2}
+          모든 스킬: {min: 1, max: 1}   # 0.7.0: 스킬 시스템으로 활성화
+        inactive: ["명중률 +250"]
+
+  duress:
+    name: "협박 (Duress)"
+    runes: [Shael, Um, Thul]
+    variants:
+      armor:
+        types: [armor]
+        options:
+          방어력 증가: {min: 40, max: 55, suffix: "%"}
+          공격력 증가: {min: 10, max: 20, suffix: "%"}
+          냉기 피해 추가: {min: 4, max: 8}
+          강타 확률: {min: 10, max: 15, suffix: "%"}
+          모든 원소 저항: {min: 10, max: 15, suffix: "%"}
+          냉기 저항: {min: 20, max: 30, suffix: "%"}
+          상처 열기: {min: 33, max: 33, suffix: "%"}
+        inactive: ["타격 회복 +40%"]
+
+  treachery:
+    name: "배신 (Treachery)"
+    runes: [Shael, Thul, Lem]
+    variants:
+      armor:
+        types: [armor]
+        options:
+          공격 속도 증가: {min: 30, max: 45, suffix: "%"}
+          냉기 저항: {min: 25, max: 30, suffix: "%"}
+        inactive: ["어쌔신 스킬 +2", "피격 시 흐리기 발동", "타격 시 맹독 발동"]
+
+  crescent_moon:
+    name: "초승달 (Crescent Moon)"
+    runes: [Shael, Um, Tir]
+    variants:
+      sword_axe:
+        types: [sword, axe]
+        options:
+          공격 속도 증가: {min: 15, max: 20, suffix: "%"}
+          공격력 증가: {min: 45, max: 65, suffix: "%"}
+          번개 피해 추가: {min: 6, max: 12}
+          방어 무시: {flag: true}
+          번개 저항 감소: {min: 35, max: 35, suffix: "%"}
+          상처 열기: {min: 25, max: 25, suffix: "%"}
+          적 처치 시 마나 회복: {min: 2, max: 2}
+
+  lawbringer:
+    name: "집행자 (Lawbringer)"
+    runes: [Amn, Lem, Ko]
+    variants:
+      sword_mace:
+        types: [sword, mace]
+        options:
+          생명력 흡수: {min: 5, max: 7, suffix: "%"}
+          민첩: {min: 10, max: 10}
+          화염 피해 추가: {min: 6, max: 10}
+          냉기 피해 추가: {min: 6, max: 10}
+          언데드 추가 피해: {min: 40, max: 60, suffix: "%"}
+          대상 방어력 감소: {min: 25, max: 25, suffix: "%"}
+        inactive: ["성역 오라", "타격 시 노화 발동"]
+
+  sanctuary:
+    name: "성역 (Sanctuary)"
+    runes: [Ko, Ko, Mal]
+    variants:
+      shield:
+        types: [shield]
+        options:
+          방어력 증가: {min: 45, max: 60, suffix: "%"}
+          민첩: {min: 15, max: 20}
+          모든 원소 저항: {min: 30, max: 45, suffix: "%"}
+          피해 감소: {min: 5, max: 7}
+
+  # --- 고급 룬워드 (지옥 구간) ---
+  fortitude:
+    name: "인내 (Fortitude)"
+    runes: [El, Sol, Dol, Lo]
+    variants:
+      weapon:
+        types: [weapon]
+        options:
+          공격력 증가: {min: 45, max: 60, suffix: "%"}
+          물리 피해 추가: {min: 6, max: 10}
+          치명타 확률: {min: 15, max: 20, suffix: "%"}
+          최대 생명력: {min: 20, max: 35}
+          모든 원소 저항: {min: 15, max: 25, suffix: "%"}
+          시전 속도: {min: 25, max: 25, suffix: "%"}   # 0.7.1: 시전 속도 활성화
+        inactive: ["냉기 갑옷 발동"]
+      armor:
+        types: [armor]
+        options:
+          방어력 증가: {min: 40, max: 55, suffix: "%"}
+          공격력 증가: {min: 25, max: 35, suffix: "%"}
+          최대 생명력: {min: 20, max: 35}
+          생명력 회복: {min: 2, max: 4}
+          모든 원소 저항: {min: 20, max: 30, suffix: "%"}
+          피해 감소: {min: 4, max: 7}
+          시전 속도: {min: 25, max: 25, suffix: "%"}   # 0.7.1: 시전 속도 활성화
+        inactive: ["냉기 갑옷 발동"]
+
+  grief:
+    name: "고뇌 (Grief)"
+    runes: [Eth, Tir, Lo, Mal, Ral]
+    variants:
+      sword_axe:
+        types: [sword, axe]
+        options:
+          공격 속도 증가: {min: 30, max: 40, suffix: "%"}
+          피해: {min: 18, max: 25}        # 0.6.4 고뇌 원작 핵심 순수 피해 가산 (원작 +340~400의 마크 체력 비례 밸런스 값)
+          방어 무시: {flag: true}
+          대상 방어력 감소: {min: 25, max: 25, suffix: "%"}
+          독 저항 감소: {min: 20, max: 25, suffix: "%"}
+          치명타 확률: {min: 15, max: 20, suffix: "%"}
+          악마 추가 피해: {min: 50, max: 80, suffix: "%"}
+          화염 피해 추가: {min: 4, max: 8}
+          괴물 회복 저지: {flag: true}
+          적 처치 시 생명력 회복: {min: 10, max: 15}
+          적 처치 시 마나 회복: {min: 2, max: 2}
+        inactive: ["타격 시 맹독 발동"]
+
+  chains_of_honor:
+    name: "명예의 굴레 (Chains of Honor)"
+    runes: [Dol, Um, Ber, Ist]
+    variants:
+      armor:
+        types: [armor]
+        options:
+          방어력 증가: {min: 35, max: 45, suffix: "%"}
+          모든 원소 저항: {min: 40, max: 55, suffix: "%"}
+          피해 감소: {min: 8, max: 8}
+          물리 저항: {min: 8, max: 8, suffix: "%"}
+          생명력 흡수: {min: 6, max: 8, suffix: "%"}
+          악마 추가 피해: {min: 50, max: 80, suffix: "%"}
+          언데드 추가 피해: {min: 50, max: 80, suffix: "%"}
+          힘: {min: 20, max: 20}
+          생명력 회복: {min: 4, max: 6}
+          아이템 발견 확률: {min: 25, max: 25, suffix: "%"}
+          모든 스킬: {min: 2, max: 2}   # 0.7.0: 스킬 시스템으로 활성화
+
+  enigma:
+    name: "수수께끼 (Enigma)"
+    runes: [Jah, Ith, Ber]
+    variants:
+      armor:
+        types: [armor]
+        options:
+          힘: {min: 30, max: 45}
+          이동 속도: {min: 25, max: 35, suffix: "%"}
+          피해 감소: {min: 6, max: 8}
+          물리 저항: {min: 8, max: 8, suffix: "%"}
+          최대 생명력: {min: 30, max: 40}
+          적 처치 시 생명력 회복: {min: 10, max: 14}
+          아이템 발견 확률: {min: 30, max: 50, suffix: "%"}
+          모든 스킬: {min: 2, max: 2}   # 0.7.0: 스킬 시스템으로 활성화
+        inactive: ["순간이동 +1"]
+
+  breath_of_the_dying:
+    name: "죽음의 숨결 (Breath of the Dying)"
+    runes: [Vex, Hel, El, Eld, Zod, Eth]
+    variants:
+      weapon:
+        types: [weapon]
+        options:
+          공격 속도 증가: {min: 40, max: 55, suffix: "%"}
+          공격력 증가: {min: 80, max: 110, suffix: "%"}
+          언데드 추가 피해: {min: 50, max: 75, suffix: "%"}
+          생명력 흡수: {min: 8, max: 12, suffix: "%"}
+          대상 방어력 감소: {min: 25, max: 25, suffix: "%"}
+          마나 흡수: {min: 7, max: 7, suffix: "%"}
+          힘: {min: 20, max: 30}
+          민첩: {min: 20, max: 30}
+          활력: {min: 20, max: 30}
+          마력: {min: 20, max: 30}
+        inactive: ["적 처치 시 독 회오리 발동"]
+
+# ============================================================
+#  스킬 시스템 (0.7.1)  [전부 미검증: 수치는 임시값이며 밸런스 조정 전이다]
+# ============================================================
+# 사용 방법: /rpgskill 로 스킬 트리를 열고 직업 선택 -> 포인트 투자 -> 스킬 장착.
+#   스킬은 RPG 무기를 "핫바 1번 칸"에서 손에 들고 있을 때만 나간다. (require-slot-one)
+#   우클릭 = 우클릭 스킬, 좌클릭 = 좌클릭 스킬(없으면 기본 공격),
+#   무기를 든 채 숫자키 2~9 = 그 칸에 등록된 스킬을 우클릭 스킬로 선택 (웅크린 채면 좌클릭 스킬).
+skill-system:
+  enabled: true
+  require-slot-one: true      # true: 무기가 1번 칸 + 손에 들고 있어야 스킬 사용
+  require-rpg-weapon: true    # true: RPG 아이템(등급이 붙은 무기)만 스킬 사용 가능
+  start-points: 1             # 처음부터 가진 스킬 포인트 (테스트하기 쉽게 넉넉히 주려면 올린다)
+  points-per-level: 1         # 마인크래프트 경험치 레벨 1당 포인트 (지금까지 도달한 최대 레벨 기준)
+  allow-reset: true           # /rpgskill reset 허용 (끄면 관리자만)
+  hit-players: false          # 스킬이 다른 플레이어에게도 맞는지 (PvP)
+  debug: false                # true: 스킬 피해마다 콘솔에 요청 피해/실제 체력 변화를 찍는다 (원인 추적용)
+  cast-time: 0.8              # 함성(시전 속도 스킬)의 기본 시전 시간(초). 시전 속도 옵션 N% 이면 /(1+N/100)
+  length-scale: 0.5           # 원작 야드 -> 칸 변환 비율 (radius-yd 등에 곱함)
+  defense-scale: 0.2          # 스킬의 "방어력 증가" 수치에 곱하는 비율 (원작 방어력%는 피해 감소%보다 훨씬 커서)
+  defense-cap: 60             # 스킬로 얻는 방어력 증가 합계 상한(%)
+
+# 직업. tabs 는 스킬 트리 탭 이름 (스킬의 tab 번호 0부터 대응).
+classes:
+  barbarian:
+    name: "바바리안"
+    icon: IRON_AXE
+    description: "근접 전투 전문. 강력한 일격과 함성으로 싸운다."
+    tabs: ["전투 기술", "전투 함성", "전투 숙련"]
+
+# 스킬 정의.  (0.7.1: D2 바바리안 트리 기준. 수치는 D2 정보 사이트 요약값이며 게임에서 검증하지 않았다 [미검증])
+#   class   직업 id (비우면 트리에 안 나오는 공용 스킬: 장비 발동/오라/저주용)
+#   kind    melee(단일) / aoe(주변 범위) / fear(공포) / whirlwind(회전) / leap(도약) / leap_attack(대상에게 도약)
+#           / buff(강화) / passive(패시브) / curse(저주) / aura(오라) / display(효과 없이 표시만)
+#   tier    1~6 -> 필요 캐릭터 레벨 1/6/12/18/24/30, 트리의 세로 줄(row)도 티어로 정해진다. col 은 0~7.
+#   speed   attack(공격 속도 영향) / cast(시전 속도 영향) / none
+#   lock    같은 lock 의 스킬은 앞선 동작(착지 / 회전)이 끝나야 다시 쓸 수 있다.  재사용 대기시간은 없다.
+#   prereq  ["스킬id:레벨"] 선행 스킬
+#   수치 표기: 숫자 하나 / {base, per-level, per-level2, max} / {points: {레벨: 값}} (사이는 직선 보간) / {values: [레벨 순서 목록]}
+#   radius-yd, range-yd, flee-dist-yd 는 원작 야드 값이며 skill-system.length-scale(0.5)을 곱해 칸으로 바꾼다.
+#   damage-pct  무기 공격력(플레이어 공격력 속성) 대비 % 피해. 이후 장비의 % 증가/치명타/저항이 그대로 적용됨
+#   magic-pct   무기 공격력 대비 % 비전 피해 (방어/저항 무시)
+#   synergy     [{skill: 다른 스킬 id, stat: 늘어날 수치 이름, per-level: 그 스킬 1레벨당 증가량, mode: pct(곱셈 %) 생략하면 더하기}]
+#   bonuses     패시브/버프/오라가 주는 옵션 (위 options 와 같은 이름 + "최대 생명력%", "최대 마나%")
+#   weapon      sword / axe / mace : 그 무기를 들고 있을 때만 bonuses 적용
+#   sounds      ["네임스페이스:소리이름", ...] 시전 시작 때 무작위로 하나 재생 (sound-volume, sound-pitch 로 크기/높이). 없으면 기본 효과음
+#   curse/curse2 {type: amplify | lower_resist | weaken | reflect | slow | defense_down, amount, duration}
+skills:
+  # ================= 바바리안: 전투 기술 (탭 0) =================
+  bash:
+    name: "강격"
+    class: barbarian
+    kind: melee
+    speed: attack
+    icon: IRON_SWORD
+    description: "대상을 강하게 내리쳐 피해를 주고 밀어낸다."
+    tab: 0
+    tier: 1
+    col: 3
+    range: 4.5
+    damage-pct: {base: 150, per-level: 5}
+    flat-damage: {base: 1, per-level: 1}
+    knockback: 0.8
+    mana: 2
+    synergy:
+      - {skill: stun, stat: damage-pct, per-level: 5}
+  double_swing:
+    name: "이중 타격"
+    class: barbarian
+    kind: melee
+    speed: attack
+    icon: DIAMOND_AXE
+    description: "왼손에 무기가 있으면 두 대상을 한 번씩, 없으면 한 대상을 두 번 공격한다."
+    tab: 0
+    tier: 2
+    col: 1
+    prereq: ["bash:1"]
+    range: 4.5
+    hits: 2
+    dual-targets: true
+    damage-pct: 100
+    mana: 2
+    synergy:
+      - {skill: bash, stat: damage-pct, per-level: 10}
+  leap:
+    name: "도약"
+    class: barbarian
+    kind: leap
+    lock: air
+    icon: FEATHER
+    description: "앞으로 뛰어올라 착지하면 주변 적을 밀쳐낸다. 착지하기 전에는 다시 쓸 수 없다."
+    tab: 0
+    tier: 2
+    col: 5
+    radius-yd: {points: {1: 4.6, 2: 7.3, 5: 11.3, 10: 14, 20: 16.6}}
+    power: 1.2
+    knockback: 1.0
+    mana: 2
+  double_throw:
+    name: "이중 투척"
+    class: barbarian
+    kind: display
+    icon: TRIDENT
+    description: "양손에 든 투척 무기를 던진다. (투척 무기 도입 후 적용 예정 - 지금은 표시만)"
+    tab: 0
+    tier: 3
+    col: 1
+    prereq: ["bash:1", "double_swing:1"]
+  stun:
+    name: "기절"
+    class: barbarian
+    kind: melee
+    speed: attack
+    icon: GOLDEN_AXE
+    description: "대상을 강하게 후려쳐 피해를 주고 기절시킨다."
+    tab: 0
+    tier: 3
+    col: 3
+    prereq: ["bash:1"]
+    range: 4.5
+    damage-pct: 100
+    stun-seconds: {points: {1: 1.2, 2: 1.4, 5: 2.0, 10: 3.0, 20: 4.5}}
+    mana: 2
+    synergy:
+      - {skill: bash, stat: damage-pct, per-level: 8}
+      - {skill: war_cry, stat: stun-seconds, per-level: 5, mode: pct}
+  leap_attack:
+    name: "도약 공격"
+    class: barbarian
+    kind: leap_attack
+    speed: attack
+    lock: air
+    icon: ARROW
+    description: "대상 적에게 도약해 공격한다. 착지하기 전에는 다시 쓸 수 없다."
+    tab: 0
+    tier: 4
+    col: 5
+    prereq: ["leap:1"]
+    range-yd: 24
+    damage-pct: {base: 200, per-level: 30}
+    mana: 9
+    synergy:
+      - {skill: leap, stat: damage-pct, per-level: 10}
+  concentrate:
+    name: "집중 공격"
+    class: barbarian
+    kind: melee
+    speed: attack
+    icon: NETHERITE_AXE
+    description: "방해받지 않는 강력한 일격. 잠시 방어력이 오른다."
+    tab: 0
+    tier: 4
+    col: 3
+    prereq: ["bash:1", "stun:1"]
+    range: 4.5
+    damage-pct: {base: 170, per-level: 5}
+    magic-pct: 0
+    self-buff-seconds: 2
+    bonuses:
+      방어력 증가: {base: 100, per-level: 10}
+    mana: 2
+    synergy:
+      - {skill: bash, stat: damage-pct, per-level: 5}
+      - {skill: battle_orders, stat: damage-pct, per-level: 10}
+      - {skill: berserk, stat: magic-pct, per-level: 1}
+  frenzy:
+    name: "광분"
+    class: barbarian
+    kind: melee
+    speed: attack
+    icon: DIAMOND_SWORD
+    description: "양손 무기로 두 번 공격한다. 적중할 때마다 공격/이동 속도가 쌓인다. (왼손에도 무기 필요)"
+    tab: 0
+    tier: 5
+    col: 1
+    prereq: ["bash:1", "double_swing:1", "double_throw:1"]
+    range: 4.5
+    hits: 2
+    requires-offhand: true
+    damage-pct: {base: 190, per-level: 5}
+    magic-pct: 0
+    attack-speed-max: {points: {1: 7, 2: 13, 5: 25, 10: 34, 20: 42}}
+    stack-max: 5
+    stack-seconds: 6
+    mana: 3
+    synergy:
+      - {skill: double_swing, stat: damage-pct, per-level: 8}
+      - {skill: taunt, stat: damage-pct, per-level: 8}
+      - {skill: berserk, stat: magic-pct, per-level: 1}
+      - {skill: increased_hp, stat: stack-seconds, per-level: 0.4}
+  whirlwind:
+    name: "소용돌이"
+    class: barbarian
+    kind: whirlwind
+    speed: attack
+    lock: whirl
+    icon: DIAMOND_AXE
+    description: "앞으로 살짝 돌진하며 회전해 주변 적을 계속 벤다. 회전이 끝나야 다시 쓸 수 있다."
+    tab: 0
+    tier: 6
+    col: 5
+    prereq: ["bash:1", "leap:1", "stun:1", "concentrate:1", "leap_attack:1"]
+    radius: 3.2
+    damage-pct: {base: 50, per-level: 8}
+    duration: {base: 2.5, per-level: 0.1, max: 4}
+    interval: 5
+    dash: 0.8
+    mana: {base: 12.5, per-level: 0.5}
+  berserk:
+    name: "버서크"
+    class: barbarian
+    kind: melee
+    speed: attack
+    icon: BLAZE_ROD
+    description: "방어를 버리고 휘두르는 비전 피해 공격. 방어/저항을 무시하지만 잠시 방어력이 줄어든다."
+    tab: 0
+    tier: 6
+    col: 3
+    prereq: ["bash:1", "stun:1", "concentrate:1"]
+    range: 4.5
+    magic-pct: {base: 150, per-level: 15}
+    self-buff-seconds: 3
+    bonuses:
+      방어력 증가: -50
+    mana: 4
+    synergy:
+      - {skill: howl, stat: magic-pct, per-level: 10}
+      - {skill: shout, stat: magic-pct, per-level: 10}
+
+  # ================= 바바리안: 전투 함성 (탭 1) =================
+  howl:
+    name: "포효"
+    class: barbarian
+    kind: fear
+    speed: cast
+    icon: GOAT_HORN
+    description: "주위의 괴물들이 공포에 질려 도망치게 한다."
+    tab: 1
+    tier: 1
+    col: 3
+    radius: 8
+    flee-seconds: {base: 3, per-level: 1}
+    flee-dist-yd: {base: 16, per-level: 3.3}
+    mana: 4
+  find_potion:
+    name: "물약 발견"
+    class: barbarian
+    kind: display
+    icon: GLASS_BOTTLE
+    description: "쓰러진 괴물에게서 물약을 얻는다. (효과 없이 표시만)"
+    tab: 1
+    tier: 1
+    col: 5
+    display:
+      물약 발견 확률(%): {base: 15, per-level: 3.6}
+  taunt:
+    name: "도발"
+    class: barbarian
+    kind: curse
+    speed: cast
+    icon: SKELETON_SKULL
+    description: "주변 괴물을 자신에게 끌어들이고 그들이 주는 피해를 줄인다."
+    tab: 1
+    tier: 2
+    col: 2
+    prereq: ["howl:1"]
+    center: self
+    aggro: true
+    radius: 8
+    curse:
+      type: weaken
+      amount: {base: 5, per-level: 2}
+      duration: 12
+    mana: 3
+  shout:
+    name: "외침"
+    class: barbarian
+    kind: buff
+    sounds: ["diablorpg:rpghamsung1", "diablorpg:rpghamsung2", "diablorpg:rpghamsung3"]   # 시전 시작 때 무작위 1개 (리소스팩 필요)
+    speed: cast
+    icon: BELL
+    description: "자신과 주변 아군의 방어력을 높인다."
+    tab: 1
+    tier: 2
+    col: 4
+    prereq: ["howl:1"]
+    radius: 12
+    duration: {base: 20, per-level: 10}
+    bonuses:
+      방어력 증가: {base: 100, per-level: 10}
+    mana: 6
+    synergy:
+      - {skill: battle_orders, stat: duration, per-level: 5}
+      - {skill: battle_command, stat: duration, per-level: 5}
+  find_item:
+    name: "아이템 발견"
+    class: barbarian
+    kind: display
+    icon: CHEST
+    description: "쓰러진 괴물의 시체에서 아이템을 찾는다. (효과 없이 표시만)"
+    tab: 1
+    tier: 3
+    col: 5
+    prereq: ["find_potion:1"]
+    display:
+      아이템 발견 확률(%): {base: 13, per-level: 2}
+  battle_cry:
+    name: "전투의 함성"
+    class: barbarian
+    kind: curse
+    speed: cast
+    icon: NOTE_BLOCK
+    description: "주변 괴물의 방어력과 공격력을 낮춘다."
+    tab: 1
+    tier: 4
+    col: 2
+    prereq: ["howl:1", "taunt:1"]
+    center: self
+    radius: 8
+    curse:
+      type: defense_down
+      amount: {base: 50, per-level: 2}
+      duration: {base: 12, per-level: 2.4}
+    curse2:
+      type: weaken
+      amount: {base: 25, per-level: 1}
+      duration: {base: 12, per-level: 2.4}
+    mana: 5
+  battle_orders:
+    name: "전투 지시"
+    class: barbarian
+    kind: buff
+    sounds: ["diablorpg:rpghamsung1", "diablorpg:rpghamsung2", "diablorpg:rpghamsung3"]   # 시전 시작 때 무작위 1개 (리소스팩 필요)
+    speed: cast
+    icon: ENCHANTED_BOOK
+    description: "자신과 주변 아군의 최대 생명력과 최대 마나를 높인다."
+    tab: 1
+    tier: 5
+    col: 4
+    prereq: ["howl:1", "shout:1"]
+    radius: 12
+    duration: {base: 35, per-level: 10}
+    bonuses:
+      최대 생명력%: {base: 35, per-level: 3}
+      최대 마나%: {base: 35, per-level: 3}
+    mana: 7
+    synergy:
+      - {skill: shout, stat: duration, per-level: 5}
+      - {skill: battle_command, stat: duration, per-level: 5}
+  war_cry:
+    name: "전장의 함성"
+    class: barbarian
+    kind: aoe
+    sounds: ["diablorpg:rpghamsung1", "diablorpg:rpghamsung2", "diablorpg:rpghamsung3"]   # 시전 시작 때 무작위 1개 (리소스팩 필요)
+    speed: cast
+    icon: RAVAGER_SPAWN_EGG
+    description: "주변 괴물에게 고정 피해를 주고 기절시킨다. 방어/저항을 무시한다."
+    tab: 1
+    tier: 6
+    col: 2
+    prereq: ["howl:1", "taunt:1", "shout:1", "battle_cry:1", "battle_orders:1"]
+    radius: 6
+    damage-min: {base: 20, per-level: 5.953, per-level2: 0.0468}
+    damage-range: 10
+    stun-seconds: {base: 1.0, per-level: 0.2}
+    mana: {base: 10, per-level: 1}
+    synergy:
+      - {skill: howl, stat: damage-bonus-pct, per-level: 6}
+      - {skill: taunt, stat: damage-bonus-pct, per-level: 6}
+      - {skill: battle_cry, stat: damage-bonus-pct, per-level: 6}
+  battle_command:
+    name: "전투 명령"
+    class: barbarian
+    kind: buff
+    sounds: ["diablorpg:rpghamsung1", "diablorpg:rpghamsung2", "diablorpg:rpghamsung3"]   # 시전 시작 때 무작위 1개 (리소스팩 필요)
+    speed: cast
+    icon: GOLDEN_HELMET
+    description: "지속되는 동안 모든 스킬 +1레벨. (스킬 레벨은 지속시간에만 영향)"
+    tab: 1
+    tier: 6
+    col: 4
+    prereq: ["howl:1", "shout:1", "battle_orders:1"]
+    radius: 12
+    duration: {base: 15, per-level: 10}
+    bonuses:
+      모든 스킬: 1
+    mana: 11
+    synergy:
+      - {skill: shout, stat: duration, per-level: 5}
+      - {skill: battle_orders, stat: duration, per-level: 5}
+
+  # ================= 바바리안: 전투 숙련 (탭 2) =================
+  sword_mastery:
+    name: "칼 숙련"
+    class: barbarian
+    kind: passive
+    weapon: sword
+    icon: IRON_SWORD
+    description: "칼(검)류를 들고 있을 때 공격력과 치명타 확률이 오른다."
+    tab: 2
+    tier: 1
+    col: 1
+    bonuses:
+      공격력 증가: {base: 28, per-level: 5}
+      치명타 확률: {values: [5, 9, 12, 15, 17, 19, 20, 21, 23, 23, 24, 25, 26, 26, 27, 28, 28, 28, 29, 29]}
+  axe_mastery:
+    name: "도끼 숙련"
+    class: barbarian
+    kind: passive
+    weapon: axe
+    icon: IRON_AXE
+    description: "도끼류를 들고 있을 때 공격력과 치명타 확률이 오른다."
+    tab: 2
+    tier: 1
+    col: 3
+    bonuses:
+      공격력 증가: {base: 28, per-level: 5}
+      치명타 확률: {values: [5, 9, 12, 15, 17, 19, 20, 21, 23, 23, 24, 25, 26, 26, 27, 28, 28, 28, 29, 29]}
+  mace_mastery:
+    name: "철퇴 숙련"
+    class: barbarian
+    kind: passive
+    weapon: mace
+    icon: MACE
+    description: "철퇴류를 들고 있을 때 공격력과 치명타 확률이 오른다."
+    tab: 2
+    tier: 1
+    col: 5
+    bonuses:
+      공격력 증가: {base: 28, per-level: 5}
+      치명타 확률: {values: [5, 9, 12, 15, 17, 19, 20, 21, 23, 23, 24, 25, 26, 26, 27, 28, 28, 28, 29, 29]}
+  polearm_mastery:
+    name: "미늘창 숙련"
+    class: barbarian
+    kind: display
+    icon: STICK
+    description: "미늘창류 숙련. (미늘창 도입 후 적용 예정 - 지금은 표시만)"
+    tab: 2
+    tier: 2
+    col: 1
+    display:
+      공격력 증가(%): {base: 28, per-level: 5}
+      치명타 확률(%): {values: [5, 9, 12, 15, 17, 19, 20, 21, 23, 23, 24, 25, 26, 26, 27, 28, 28, 28, 29, 29]}
+  throwing_mastery:
+    name: "투척 숙련"
+    class: barbarian
+    kind: display
+    icon: SNOWBALL
+    description: "투척 무기 숙련. (투척 무기 도입 후 적용 예정 - 지금은 표시만)"
+    tab: 2
+    tier: 2
+    col: 3
+    display:
+      공격력 증가(%): {base: 28, per-level: 5}
+      치명타 확률(%): {values: [5, 9, 12, 15, 17, 19, 20, 21, 23, 23, 24, 25, 26, 26, 27, 28, 28, 28, 29, 29]}
+  spear_mastery:
+    name: "창 숙련"
+    class: barbarian
+    kind: display
+    icon: TRIDENT
+    description: "창류 숙련. (창 도입 후 적용 예정 - 지금은 표시만)"
+    tab: 2
+    tier: 2
+    col: 5
+    display:
+      공격력 증가(%): {base: 28, per-level: 5}
+      치명타 확률(%): {values: [5, 9, 12, 15, 17, 19, 20, 21, 23, 23, 24, 25, 26, 26, 27, 28, 28, 28, 29, 29]}
+  increased_hp:
+    name: "체력 증가"
+    class: barbarian
+    kind: passive
+    icon: GOLDEN_APPLE
+    description: "최대 생명력이 %로 오른다. (광분의 지속시간도 늘려 준다)"
+    tab: 2
+    tier: 3
+    col: 3
+    bonuses:
+      최대 생명력%: {base: 3, per-level: 1.5}
+  iron_skin:
+    name: "철갑 피부"
+    class: barbarian
+    kind: passive
+    icon: IRON_CHESTPLATE
+    description: "방어력이 오른다."
+    tab: 2
+    tier: 4
+    col: 5
+    bonuses:
+      방어력 증가: {base: 30, per-level: 10}
+  increased_speed:
+    name: "속도 증가"
+    class: barbarian
+    kind: passive
+    icon: LEATHER_BOOTS
+    description: "이동 속도가 오른다."
+    tab: 2
+    tier: 5
+    col: 3
+    prereq: ["increased_hp:1"]
+    bonuses:
+      이동 속도: {values: [13, 18, 22, 25, 28, 30, 32, 33, 35, 36, 37, 38, 39, 40, 40, 41, 41, 42, 42, 43]}
+  natural_resistance:
+    name: "타고난 저항"
+    class: barbarian
+    kind: passive
+    icon: MAGMA_CREAM
+    description: "모든 원소 저항이 오른다."
+    tab: 2
+    tier: 6
+    col: 5
+    prereq: ["iron_skin:1"]
+    bonuses:
+      모든 원소 저항: {values: [12, 21, 28, 35, 40, 44, 47, 49, 52, 54, 56, 58, 60, 61, 62, 64, 64, 65, 66, 67]}
+
+  # ---------- 공용 저주 (장비 발동용. class 가 없어 트리에는 나오지 않는다) ----------
+  amplify_damage:
+    name: "피해 증폭"
+    kind: curse
+    icon: ENDER_PEARL
+    description: "저주받은 몹이 받는 물리 피해가 늘어난다."
+    max-level: 20
+    range: 20
+    radius: {base: 4, per-level: 0.3, max: 8}
+    curse:
+      type: amplify
+      amount: {base: 50, per-level: 5}       # 원작은 레벨과 무관하게 +100% 에 가깝다. 이 서버용 임시값.
+      duration: {base: 6, per-level: 1}
+    mana: {base: 4, per-level: 0.2}
+  weaken:
+    name: "약화"
+    kind: curse
+    icon: WITHER_ROSE
+    description: "저주받은 몹이 주는 피해가 줄어든다."
+    max-level: 20
+    range: 20
+    radius: {base: 4, per-level: 0.3, max: 8}
+    curse:
+      type: weaken
+      amount: {base: 25, per-level: 2, max: 70}
+      duration: {base: 6, per-level: 1}
+    mana: {base: 4, per-level: 0.2}
+  iron_maiden:
+    name: "강철 처녀"
+    kind: curse
+    icon: IRON_BARS
+    description: "저주받은 몹이 준 피해의 일부를 자신이 받는다."
+    max-level: 20
+    range: 20
+    radius: {base: 4, per-level: 0.3, max: 8}
+    curse:
+      type: reflect
+      amount: {base: 50, per-level: 10}
+      duration: {base: 8, per-level: 1}
+    mana: {base: 5, per-level: 0.2}
+  lower_resist:
+    name: "저항 낮추기"
+    kind: curse
+    icon: FERMENTED_SPIDER_EYE
+    description: "저주받은 몹의 원소 저항이 낮아진다."
+    max-level: 20
+    range: 20
+    radius: {base: 4, per-level: 0.3, max: 8}
+    curse:
+      type: lower_resist
+      amount: {base: 15, per-level: 2, max: 60}
+      duration: {base: 8, per-level: 1}
+    mana: {base: 5, per-level: 0.2}
+
+  # ---------- 공용 오라 (장비 옵션 "<오라 이름> +N레벨" 로 켜진다) ----------
+  might:
+    name: "힘의 오라"
+    kind: aura
+    icon: BLAZE_POWDER
+    description: "주변 플레이어(자신 포함)의 공격력이 오른다."
+    max-level: 30
+    radius: 12
+    bonuses:
+      공격력 증가: {base: 30, per-level: 8}
+  defiance:
+    name: "저항의 오라"
+    kind: aura
+    icon: SHIELD
+    description: "주변 플레이어(자신 포함)의 방어력이 오른다."
+    max-level: 30
+    radius: 12
+    bonuses:
+      방어력 증가: {base: 40, per-level: 8}
+  holy_fire:
+    name: "신성한 불 오라"
+    kind: aura
+    icon: FIRE_CHARGE
+    description: "주변 몹에게 초당 피해를 준다. (무기 옵션 적용 없는 고정 피해)"
+    max-level: 30
+    radius: 6
+    element: fire
+    damage: {base: 2, per-level: 0.7}
+  holy_freeze:
+    name: "신성한 냉기 오라"
+    kind: aura
+    icon: SNOWBALL
+    description: "주변 몹에게 초당 피해를 주고 느리게 만든다. (무기 옵션 적용 없는 고정 피해)"
+    max-level: 30
+    radius: 6
+    element: cold
+    damage: {base: 1.5, per-level: 0.5}
+    slow-amp: 2
+
+# 장비 발동 옵션. option-name 이 아이템 옵션 이름이 되고, 값은 발동 확률(%)이다.
+#   trigger  hit(타격 시) / struck(피격 시)   cast  스킬 id   level  시전 레벨
+#   마나/재사용 대기 없이 효과만 나간다. 스킬/오라 발동 피해로는 다시 발동하지 않는다.
+skill-procs:
+  hit_amplify_1:
+    option-name: "타격 시 피해 증폭 1레벨 시전"
+    trigger: hit
+    cast: amplify_damage
+    level: 1
+  hit_weaken_1:
+    option-name: "타격 시 약화 1레벨 시전"
+    trigger: hit
+    cast: weaken
+    level: 1
+  hit_lower_resist_1:
+    option-name: "타격 시 저항 낮추기 1레벨 시전"
+    trigger: hit
+    cast: lower_resist
+    level: 1
+  struck_iron_maiden_1:
+    option-name: "피격 시 강철 처녀 1레벨 시전"
+    trigger: struck
+    cast: iron_maiden
+    level: 1
+
+# 스킬 시스템 테스트용 유니크 (확정 옵션). 지급: /rpgitem give <플레이어> unique skilltest_chest

@@ -1,0 +1,47 @@
+name: DiabloRPG
+version: 0.7.5
+main: com.example.diablorpg.DiabloRPG
+api-version: '1.21'
+commands:
+  rpgitem:
+    description: RPG 아이템 지급 명령어
+    usage: /rpgitem give <플레이어> <normal|magic|rare|unique|set|runeword> <아이템|random_weapon|유니크ID>
+    permission: diablorpg.admin
+  rpgtest:
+    description: 특정 옵션을 확정 부착한 테스트 아이템 지급
+    usage: /rpgtest <플레이어> <crit|crush|leech|defred|armor|physres|fireres|allres|dmgred|health|atkspeed|movespeed|demon|undead|slow|bow|crossbow|bowmix|overres|negres|str|dex|vit|energy|mana|liferegen|lifeonkill|manaonkill|killregen|goldfind|magicfind|expgain|dodge|resred|flatdmg|ignoredef|pmh|openwounds|manaleech|nofreeze>
+    permission: diablorpg.admin
+  rpgdummy:
+    description: 전투 테스트용 샌드백 소환/제거
+    usage: "/rpgdummy spawn <normal|undead|demon> [방어%] [원소저항%] 또는 /rpgdummy clear"
+    permission: diablorpg.admin
+  rpgrune:
+    description: 룬 지급 / 룬워드 레시피 확인
+    usage: "/rpgrune give <플레이어> <룬|all> [개수] 또는 /rpgrune list 또는 /rpgrune recipes"
+    permission: diablorpg.admin
+  rpgcube:
+    description: 큐브 창 열기 (룬워드 제작, 테스트용)
+    usage: /rpgcube
+    permission: diablorpg.admin
+  rpgset:
+    description: 착용 중인 세트 아이템과 활성 세트 보너스 확인 / 세트 목록
+    usage: "/rpgset 또는 /rpgset list"
+  rpgstat:
+    description: 내 능력치(힘/민첩/활력/마력)와 마나 확인
+    usage: "/rpgstat 또는 /rpgstat setmana <수치>"
+  rpggold:
+    description: 보유 골드 및 골드/아이템 발견 옵션 확인 (관리자 지급/설정)
+    usage: "/rpggold 또는 /rpggold give|set <플레이어> <수치>"
+  rpgshop:
+    description: 상점 열기 / 상인 NPC 소환 및 제거
+    usage: "/rpgshop 또는 /rpgshop spawn|clear"
+  rpggamble:
+    description: 도박(랜덤 장비 뽑기) 창 열기
+    usage: /rpggamble
+  rpgskill:
+    description: 직업 선택 / 스킬 트리 / 스킬 장착 (바바리안)
+    usage: "/rpgskill [class|mode|left|right|bind|learn|reset|points|cast|info]"
+    aliases: [skills, rpgskills]
+permissions:
+  diablorpg.admin:
+    default: op

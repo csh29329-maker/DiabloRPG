@@ -1,0 +1,10 @@
+-d
+/tmp/jc
+-proc:none
+com/example/diablorpg/DiabloRPG.java
+com/example/diablorpg/GoldSystem.java
+com/example/diablorpg/RuneSystem.java
+com/example/diablorpg/SetSystem.java
+com/example/diablorpg/SkillSystem.java
+com/example/diablorpg/StatSystem.java
+com/example/diablorpg/VersionCompat.java
